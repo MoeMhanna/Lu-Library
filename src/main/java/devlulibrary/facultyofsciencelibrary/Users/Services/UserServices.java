@@ -16,4 +16,24 @@ public class UserServices {
     public List<UsersModel> getUsersDao() {
         return usersDao.getUsersList();
     }
+
+    //get user by id
+    public UsersModel getUserById(String id) {
+        try {
+            return usersDao.getUserById(id);
+        } catch (Exception e) {
+            System.out.println(e);
+            throw new IllegalStateException("User not exist");
+        }
+    }
+
+    //add user
+    public void addUser(UsersModel user) {
+        usersDao.addUser(user);
+    }
+
+    //delete user
+    public void deleteUser(String id) {
+        usersDao.deleteUser(id);
+    }
 }
