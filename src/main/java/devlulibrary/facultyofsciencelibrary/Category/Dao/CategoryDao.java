@@ -14,7 +14,10 @@ public class CategoryDao {
         return categoryList;
     }
     public CategoryModel getCategoryId(String id) {
-        return categoryList.stream().filter(t -> t.getCategory().equals(id)).findFirst().get();
+        return categoryList.stream()
+                .filter(categoryModel -> categoryModel.getCategory().equals(id))
+                .findFirst()
+                .orElse(null); // Return null if no matching category is found
     }
     public void addCategory(CategoryModel category) {
         categoryList.stream().filter(t -> t.getCategory().equals(category.getCategory())).findFirst().ifPresentOrElse(t -> {

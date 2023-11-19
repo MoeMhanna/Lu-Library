@@ -9,7 +9,7 @@ import java.util.List;
 public class BooksDao {
     private List<BooksModel> booksList = new ArrayList<>();
     public BooksDao() {
-        booksList.add(new BooksModel("Murder on the orient express", "Agatha", "Crime...",new CategoryModel("Crime")));
+        booksList.add(new BooksModel("Murder on the orient express", "Agatha", "Crime...",new CategoryModel("Math")));
     }
     public List<BooksModel> getBooksList() {
         return booksList;

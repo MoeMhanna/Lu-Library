@@ -18,6 +18,14 @@ public class BooksModel {
         this.category=category;
     }
 
+    public String getCategory() {
+        return category.getCategory();
+    }
+
+    public void setCategory(CategoryModel category) {
+        this.category = category;
+    }
+
     public String getId() {
         return id;
     }
