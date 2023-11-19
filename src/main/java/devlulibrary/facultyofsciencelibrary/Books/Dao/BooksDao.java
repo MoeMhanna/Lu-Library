@@ -1,6 +1,7 @@
 package devlulibrary.facultyofsciencelibrary.Books.Dao;
 
 import devlulibrary.facultyofsciencelibrary.Books.Model.BooksModel;
+import devlulibrary.facultyofsciencelibrary.Category.Model.CategoryModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
 public class BooksDao {
     private List<BooksModel> booksList = new ArrayList<>();
     public BooksDao() {
-        booksList.add(new BooksModel("MMurder on the orient express", "Agatha", "Crime..."));
+        booksList.add(new BooksModel("Murder on the orient express", "Agatha", "Crime...",new CategoryModel("Crime")));
     }
     public List<BooksModel> getBooksList() {
         return booksList;

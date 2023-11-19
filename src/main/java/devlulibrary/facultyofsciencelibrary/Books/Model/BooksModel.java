@@ -1,4 +1,6 @@
 package devlulibrary.facultyofsciencelibrary.Books.Model;
+import devlulibrary.facultyofsciencelibrary.Category.Model.CategoryModel;
+
 import java.util.Objects;
 import java.util.UUID;
 
@@ -7,11 +9,13 @@ public class BooksModel {
     private String bookname;
     private String writer;
     private String description;
-    public BooksModel(String bookname, String writer, String description) {
+    private CategoryModel category;
+    public BooksModel(String bookname, String writer, String description,CategoryModel category) {
         id = UUID.randomUUID().toString();
         this.bookname = bookname;
         this.writer = writer;
         this.description = description;
+        this.category=category;
     }
 
     public String getId() {
