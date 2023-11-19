@@ -3,19 +3,19 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class BooksModel {
-    private int id;
+    private String id;
     private String bookname;
     private String writer;
     private String description;
     public BooksModel(String bookname, String writer, String description) {
-        id = Integer.parseInt(UUID.randomUUID().toString());
+        id = UUID.randomUUID().toString();
         this.bookname = bookname;
         this.writer = writer;
         this.description = description;
     }
 
     public String getId() {
-        return String.valueOf(id);
+        return id;
     }
 
     public String getWriter() {

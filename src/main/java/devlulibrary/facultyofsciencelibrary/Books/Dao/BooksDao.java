@@ -1,7 +1,6 @@
 package devlulibrary.facultyofsciencelibrary.Books.Dao;
 
 import devlulibrary.facultyofsciencelibrary.Books.Model.BooksModel;
-import devlulibrary.facultyofsciencelibrary.Users.model.UsersModel;
 
 import java.util.ArrayList;
 import java.util.List;
