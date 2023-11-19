@@ -9,27 +9,24 @@ import java.util.List;
 @RestController
 @RequestMapping("/Books")
 public class BookController {
-    private final BooksService booksServices;
-    BookController(BooksService bookServices){
-        this.booksServices = bookServices;
+    private final BooksService booksService;
+    BookController(BooksService bookService){
+        this.booksService = bookService;
     }
     @GetMapping
-    public List<BooksModel> listUsers(){
-        return this.booksServices.getBooksDao();
+    public List<BooksModel> listBooks(){
+        return this.booksService.getBooksList();
     }
     @GetMapping("/{id}")
     public BooksModel getBookById(String id){
-        return this.booksServices.getBookById(id);
+        return this.booksService.getBookById(id);
     }
-
     @DeleteMapping("/{id}")
     public void deleteBook(String id){
-        this.booksServices.deleteBook(id);
+        this.booksService.deleteBook(id);
     }
-
     @PostMapping
     public void addBook(BooksModel book){
-        this.booksServices.addBook(book);
+        this.booksService.addBook(book);
     }
-
 }

@@ -11,11 +11,9 @@ import java.util.List;
 @Component
 public class BooksService {
     private final BooksDao booksDao=new BooksDao();
-    public List<BooksModel> getBooksDao() {
-
+    public List<BooksModel> getBooksList() {
         return booksDao.getBooksList();
     }
-    //get book by id
     public BooksModel getBookById(String id) {
         try {
             return booksDao.getBookById(id);
@@ -24,13 +22,9 @@ public class BooksService {
             throw new IllegalStateException("User not exist");
         }
     }
-
-    //add book
     public void addBook(BooksModel book) {
         booksDao.addBook(book);
     }
-
-    //delete book
     public void deleteBook(String id) {
         booksDao.deleteBook(id);
     }
