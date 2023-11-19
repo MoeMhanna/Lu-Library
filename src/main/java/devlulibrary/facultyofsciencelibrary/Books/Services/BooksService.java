@@ -19,7 +19,7 @@ public class BooksService {
             return booksDao.getBookById(id);
         } catch (Exception e) {
             System.out.println(e);
-            throw new IllegalStateException("User not exist");
+            throw new IllegalStateException("Book deos not exist");
         }
     }
     public void addBook(BooksModel book) {

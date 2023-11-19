@@ -21,7 +21,7 @@ public class BooksDao {
     //add book with lambda expression and search if exist or not
     public void addBook(BooksModel book) {
         booksList.stream().filter(t -> t.getId().equals(book.getId())).findFirst().ifPresentOrElse(t -> {
-            throw new IllegalStateException("User already exist");
+            throw new IllegalStateException("Book already exist");
         }, () -> {
             booksList.add(book);
         });
@@ -32,16 +32,16 @@ public class BooksDao {
         booksList.stream().filter(t -> t.getId().equals(id)).findFirst().ifPresentOrElse(t -> {
             booksList.remove(t);
         }, () -> {
-            throw new IllegalStateException("User not exist");
+            throw new IllegalStateException("Book does not exist");
         });
     }
 
     //update book with lambda expression and search if exist or not
-    public void updateUser(String id, BooksModel book) {
+    public void updateBook(String id, BooksModel book) {
         booksList.stream().filter(t -> t.getId().equals(id)).findFirst().ifPresentOrElse(t -> {
             booksList.set(booksList.indexOf(t), book);
         }, () -> {
-            throw new IllegalStateException("User not exist");
+            throw new IllegalStateException("Book does not exist");
         });
     }
 }
