@@ -1,16 +1,23 @@
 package devlulibrary.facultyofsciencelibrary.Users.model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.Objects;
 import java.util.UUID;
 
+@Document
 public class UsersModel {
+    @Id
     private String id;
     private String username;
     private String email;
     private String Password;
 
+    public UsersModel() {
+    }
+
     public UsersModel(String username, String email, String password) {
-        id = UUID.randomUUID().toString();
         this.username = username;
         this.email = email;
         Password = password;
@@ -18,10 +25,6 @@ public class UsersModel {
 
     public String getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getUsername() {
