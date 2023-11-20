@@ -3,7 +3,6 @@ package devlulibrary.facultyofsciencelibrary.Authentication.Controllers;
 import devlulibrary.facultyofsciencelibrary.Authentication.Dto.LoginDto;
 import devlulibrary.facultyofsciencelibrary.Authentication.Dto.RegisterDto;
 import devlulibrary.facultyofsciencelibrary.Authentication.Services.AuthenticationService;
-import devlulibrary.facultyofsciencelibrary.Users.Dto.UserForCreationDto;
 import devlulibrary.facultyofsciencelibrary.Users.model.UsersModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
