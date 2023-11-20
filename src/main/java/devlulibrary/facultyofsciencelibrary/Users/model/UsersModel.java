@@ -16,8 +16,6 @@ public class UsersModel {
     private String email;
     private UserRole role;
     private String password;
-
-
     private Date createdOn;
 
     public UsersModel() {
@@ -67,6 +65,7 @@ public class UsersModel {
     public void setPassword(String password) {
         password = password;
     }
+
     public Date getCreatedOn() {
         return createdOn;
     }
