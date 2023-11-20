@@ -1,13 +1,22 @@
 package devlulibrary.facultyofsciencelibrary.Users.Dto;
 
+import devlulibrary.facultyofsciencelibrary.Users.Enumerables.UserRole;
+import jakarta.validation.constraints.NotNull;
+
 public class UserDto {
+    @NotNull
     private final String username;
+    @NotNull
     private final String email;
+    @NotNull
+    private final UserRole role;
+    @NotNull
     private final String Password;
 
-    public UserDto(String username, String email, String password) {
+    public UserDto(String username, String email, UserRole role, String password) {
         this.username = username;
         this.email = email;
+        this.role = role;
         Password = password;
     }
 
@@ -19,5 +28,11 @@ public class UserDto {
         return email;
     }
 
-    public String getPassword() { return Password; }
+    public String getPassword() {
+        return Password;
+    }
+
+    public UserRole getRole() {
+        return role;
+    }
 }

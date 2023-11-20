@@ -35,16 +35,8 @@ public class UsersDao {
         boolean exist = usersRepositories.findById(id).isPresent();
         System.out.println(exist);
         if (!exist) {
-            throw new IllegalStateException("User not exist");
+            throw new IllegalStateException();
         }
         usersRepositories.deleteById(id);
     }
-
-//    public void updateUser(String id, UsersModel user) {
-//        usersList.stream().filter(t -> t.getId().equals(id)).findFirst().ifPresentOrElse(t -> {
-//            usersList.set(usersList.indexOf(t), user);
-//        }, () -> {
-//            throw new IllegalStateException("User not exist");
-//        });
-//    }
 }
