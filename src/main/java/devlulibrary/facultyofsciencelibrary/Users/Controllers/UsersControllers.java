@@ -1,6 +1,6 @@
 package devlulibrary.facultyofsciencelibrary.Users.Controllers;
 
-import devlulibrary.facultyofsciencelibrary.Users.Dto.UserDto;
+import devlulibrary.facultyofsciencelibrary.Users.Dto.UserForCreationDto;
 import devlulibrary.facultyofsciencelibrary.Users.Services.UserServices;
 import devlulibrary.facultyofsciencelibrary.Users.model.UsersModel;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +28,7 @@ public class UsersControllers {
     }
 
     @PostMapping
-    public ResponseEntity<UsersModel> addUser(@RequestBody UserDto user) {
+    public ResponseEntity<UsersModel> addUser(@RequestBody UserForCreationDto user) {
         return this.usersServices.addUser(user);
     }
 

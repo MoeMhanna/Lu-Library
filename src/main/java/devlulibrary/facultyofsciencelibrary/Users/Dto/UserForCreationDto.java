@@ -3,7 +3,7 @@ package devlulibrary.facultyofsciencelibrary.Users.Dto;
 import devlulibrary.facultyofsciencelibrary.Users.Enumerables.UserRole;
 import jakarta.validation.constraints.NotNull;
 
-public class UserDto {
+public class UserForCreationDto {
     @NotNull
     private final String username;
     @NotNull
@@ -13,7 +13,7 @@ public class UserDto {
     @NotNull
     private final String Password;
 
-    public UserDto(String username, String email, UserRole role, String password) {
+    public UserForCreationDto(String username, String email, UserRole role, String password) {
         this.username = username;
         this.email = email;
         this.role = role;

@@ -1,7 +1,7 @@
 package devlulibrary.facultyofsciencelibrary.Users.Services;
 
 import devlulibrary.facultyofsciencelibrary.Users.Dao.UsersDao;
-import devlulibrary.facultyofsciencelibrary.Users.Dto.UserDto;
+import devlulibrary.facultyofsciencelibrary.Users.Dto.UserForCreationDto;
 import devlulibrary.facultyofsciencelibrary.Users.Enumerables.UserRole;
 import devlulibrary.facultyofsciencelibrary.Users.model.UsersModel;
 import org.springframework.http.HttpStatusCode;
@@ -32,7 +32,7 @@ public class UserServices {
         }
     }
 
-    public ResponseEntity<UsersModel> addUser(UserDto user) {
+    public ResponseEntity<UsersModel> addUser(UserForCreationDto user) {
         if (user.getRole() != UserRole.USER && user.getRole() != UserRole.ADMIN) {
             return new ResponseEntity("Role not exist", HttpStatusCode.valueOf(400));
         }
