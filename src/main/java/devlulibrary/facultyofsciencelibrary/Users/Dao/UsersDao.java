@@ -1,50 +1,42 @@
 package devlulibrary.facultyofsciencelibrary.Users.Dao;
 
+import devlulibrary.facultyofsciencelibrary.Users.Repositories.UsersRepositories;
 import devlulibrary.facultyofsciencelibrary.Users.model.UsersModel;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class UsersDao {
-    private List<UsersModel> usersList = new ArrayList<>();
+    private final UsersRepositories usersRepositories;
 
-    public UsersDao() {
-        usersList.add(new UsersModel("Mhanna", "hamoudmehanna@gmail.com", "P@ssw0rd!"));
+    public UsersDao(UsersRepositories usersRepositories) {
+        this.usersRepositories = usersRepositories;
     }
 
     public List<UsersModel> getUsersList() {
-        return usersList;
+        System.out.println(usersRepositories.findAll());
+        return usersRepositories.findAll();
     }
 
-    //get user by id with lambda expression
     public UsersModel getUserById(String id) {
-        return usersList.stream().filter(t -> t.getId().equals(id)).findFirst().get();
+        return this.usersRepositories.findById(id).orElseThrow(() -> new IllegalStateException("User not exist"));
     }
 
-    //add user with lambda expression and search if exist or not
-    public void addUser(UsersModel user) {
-        usersList.stream().filter(t -> t.getId().equals(user.getId())).findFirst().ifPresentOrElse(t -> {
-            throw new IllegalStateException("User already exist");
-        }, () -> {
-            usersList.add(user);
-        });
+    public UsersModel addUser(UsersModel user) {
+        boolean exist = usersRepositories.findUsersModelByEmail(user.getEmail()).isPresent();
+        if (exist) {
+            throw new IllegalStateException();
+        }
+        return usersRepositories.save(user);
     }
 
-    //delete user with lambda expression and search if exist or not
     public void deleteUser(String id) {
-        usersList.stream().filter(t -> t.getId().equals(id)).findFirst().ifPresentOrElse(t -> {
-            usersList.remove(t);
-        }, () -> {
-            throw new IllegalStateException("User not exist");
-        });
-    }
-
-    //update user with lambda expression and search if exist or not
-    public void updateUser(String id, UsersModel user) {
-        usersList.stream().filter(t -> t.getId().equals(id)).findFirst().ifPresentOrElse(t -> {
-            usersList.set(usersList.indexOf(t), user);
-        }, () -> {
-            throw new IllegalStateException("User not exist");
-        });
+        boolean exist = usersRepositories.findById(id).isPresent();
+        System.out.println(exist);
+        if (!exist) {
+            throw new IllegalStateException();
+        }
+        usersRepositories.deleteById(id);
     }
 }
