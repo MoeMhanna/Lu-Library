@@ -2,6 +2,8 @@ package devlulibrary.facultyofsciencelibrary.Category.Service;
 
 import devlulibrary.facultyofsciencelibrary.Category.Dao.CategoryDao;
 import devlulibrary.facultyofsciencelibrary.Category.Model.CategoryModel;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -9,24 +11,35 @@ import java.util.List;
 @Service
 @Component
 public class CategoryService {
-    private final CategoryDao categoryDao=new CategoryDao();
-    public List<CategoryModel> getCategoryList() {
-        return categoryDao.getCategoryList();
+    private final CategoryDao categoryDao;
+    public CategoryService(CategoryDao categoryDao) {
+        this.categoryDao = categoryDao;
     }
-    public CategoryModel getCategoryById(String id) {
+    public ResponseEntity<List<CategoryModel>> getCategoryList() {
+        return ResponseEntity.ok(categoryDao.getCategoryList());
+    }
+    public ResponseEntity<CategoryModel> getCategoryById(String category) {
         try {
-            return categoryDao.getCategoryId(id);
+            return ResponseEntity.ok(categoryDao.getCategoryId(category));
         } catch (Exception e) {
-            System.out.println(e);
-            throw new IllegalStateException("Category does not exist");
+            return ResponseEntity.notFound().build();
         }
     }
-    public void addCategory(CategoryModel category)
+    public ResponseEntity<CategoryModel> addCategory(CategoryModel category)
     {
-        //check if book.category exists using category dao and throw exception
-        categoryDao.addCategory(category);
+        try {
+            categoryDao.addCategory(category);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatusCode.valueOf(409)).build();
+        }
     }
-    public void deleteCategory(String id) {
-        categoryDao.deleteCategory(id);
+    public ResponseEntity deleteCategory(String category) {
+        try {
+            categoryDao.deleteCategory(category);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

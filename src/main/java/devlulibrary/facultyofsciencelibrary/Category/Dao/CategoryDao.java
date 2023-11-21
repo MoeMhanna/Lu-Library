@@ -1,44 +1,36 @@
 package devlulibrary.facultyofsciencelibrary.Category.Dao;
 
 import devlulibrary.facultyofsciencelibrary.Category.Model.CategoryModel;
+import devlulibrary.facultyofsciencelibrary.Category.Repositories.CategoryRepositories;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Service
 public class CategoryDao {
-    private List<CategoryModel> categoryList = new ArrayList<>();
-    public CategoryDao() {
-        categoryList.add(new CategoryModel("Math"));
+    private final CategoryRepositories categoryRepositories;
+
+    public CategoryDao(CategoryRepositories categoryRepositories) {
+        this.categoryRepositories = categoryRepositories;
     }
     public List<CategoryModel> getCategoryList() {
-        return categoryList;
+        return categoryRepositories.findAll();
     }
-    public CategoryModel getCategoryId(String id) {
-        return categoryList.stream()
-                .filter(categoryModel -> categoryModel.getCategory().equals(id))
-                .findFirst()
-                .orElse(null); // Return null if no matching category is found
+    public CategoryModel getCategoryId(String category) {
+        return this.categoryRepositories.findCategoryModelByCategory(category).orElseThrow(() -> new IllegalStateException("Category does not exist"));
     }
     public void addCategory(CategoryModel category) {
-        categoryList.stream().filter(t -> t.getCategory().equals(category.getCategory())).findFirst().ifPresentOrElse(t -> {
-            throw new IllegalStateException("Category already exist");
-        }, () -> {
-            categoryList.add(category);
-        });
+        if(!categoryRepositories.findCategoryModelByCategory(category.getCategory()).isPresent()){
+            categoryRepositories.save(category);
+        }
+        else{throw new IllegalStateException();}
     }
-    public void deleteCategory(String id) {
-        categoryList.stream().filter(t -> t.getCategory().equals(id)).findFirst().ifPresentOrElse(t -> {
-            categoryList.remove(t);
-        }, () -> {
-            throw new IllegalStateException("Category does not exist");
-        });
-    }
-
-    public void updateCategory(String id, CategoryModel category) {
-        categoryList.stream().filter(t -> t.getCategory().equals(id)).findFirst().ifPresentOrElse(t -> {
-            categoryList.set(categoryList.indexOf(t),category);
-        }, () -> {
-            throw new IllegalStateException("category does not exist");
-        });
+    public void deleteCategory(String category) {
+        if(categoryRepositories.findCategoryModelByCategory(category).isPresent()){
+             categoryRepositories.deleteCategoryModelByCategory(category);
+        }
+        else{
+            throw new IllegalStateException();
+        }
     }
 }

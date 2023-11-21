@@ -3,6 +3,7 @@ import devlulibrary.facultyofsciencelibrary.Books.Model.BooksModel;
 import devlulibrary.facultyofsciencelibrary.Books.Services.BooksService;
 import devlulibrary.facultyofsciencelibrary.Category.Model.CategoryModel;
 import devlulibrary.facultyofsciencelibrary.Category.Service.CategoryService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -13,33 +14,23 @@ import java.util.stream.Collectors;
 @RequestMapping("/Category")
 public class CategoryController {
     private final CategoryService categoryService;
-    private final BooksService booksService;
-    CategoryController(CategoryService categoryService,BooksService bookService){
+    CategoryController(CategoryService categoryService){
         this.categoryService = categoryService;
-        this.booksService = bookService;
     }
     @GetMapping
-    public List<CategoryModel> listCategory(){
+    public ResponseEntity<List<CategoryModel>> listCategory(){
         return this.categoryService.getCategoryList();
     }
     @GetMapping("/{id}")
-    public CategoryModel getCategoryById(String id){
+    public ResponseEntity<CategoryModel> getCategoryById(@PathVariable String id){
         return this.categoryService.getCategoryById(id);
     }
-    @GetMapping("/{category}")
-    public List<BooksModel> getCategoryBooks( String category){
-        List<BooksModel> books = booksService.getBooksList().stream()
-                .filter(book -> book.getCategory().equals(this.categoryService.getCategoryById(category).getCategory()))
-                .collect(Collectors.toList());
-        return books;
-
-    }
     @DeleteMapping("/{id}")
-    public void deleteCategory(String id){
-        this.categoryService.deleteCategory(id);
+    public ResponseEntity<CategoryModel> deleteCategory(String id){
+        return this.categoryService.deleteCategory(id);
     }
     @PostMapping
-    public void addCategory(CategoryModel category){
-        this.categoryService.addCategory(category);
+    public ResponseEntity<CategoryModel> addCategory(@RequestBody CategoryModel category){
+        return this.categoryService.addCategory(category);
     }
 }

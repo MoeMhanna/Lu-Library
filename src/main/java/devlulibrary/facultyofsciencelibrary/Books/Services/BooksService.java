@@ -13,7 +13,6 @@ import java.util.List;
 @Component
 public class BooksService {
     private final BooksDao booksDao=new BooksDao();
-    private final CategoryDao categoryDao=new CategoryDao();
     public List<BooksModel> getBooksList() {
         return booksDao.getBooksList();
     }
@@ -26,12 +25,8 @@ public class BooksService {
         }
     }
     public void addBook(BooksModel book) {
-        if(categoryDao.getCategoryId(book.getCategory())!=null){
             booksDao.addBook(book);
-        }
-        else{
-            System.out.println("Category does not exist. Unable to add the book.");
-        }
+
     }
     public void deleteBook(String id) {
         booksDao.deleteBook(id);
