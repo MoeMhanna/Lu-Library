@@ -1,14 +1,12 @@
 package devlulibrary.facultyofsciencelibrary.Category.Controllers;
-import devlulibrary.facultyofsciencelibrary.Books.Model.BooksModel;
-import devlulibrary.facultyofsciencelibrary.Books.Services.BooksService;
+import devlulibrary.facultyofsciencelibrary.Books.Dto.BooksForResponseDto;
 import devlulibrary.facultyofsciencelibrary.Category.Model.CategoryModel;
 import devlulibrary.facultyofsciencelibrary.Category.Service.CategoryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/Category")
@@ -26,7 +24,7 @@ public class CategoryController {
         return this.categoryService.getCategoryById(id);
     }
     @GetMapping("/{id}/books")
-    public ResponseEntity<List<BooksModel>> getCategoryBooks(@PathVariable String id){
+    public ResponseEntity<List<BooksForResponseDto>> getCategoryBooks(@PathVariable String id){
         return this.categoryService.getCategoryBooks(id);
     }
     @DeleteMapping("/{id}")
