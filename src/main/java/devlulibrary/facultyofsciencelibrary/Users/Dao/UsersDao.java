@@ -15,12 +15,12 @@ public class UsersDao {
     }
 
     public List<UsersModel> getUsersList() {
-        System.out.println(usersRepositories.findAll());
         return usersRepositories.findAll();
     }
 
     public UsersModel getUserById(String id) {
-        return this.usersRepositories.findById(id).orElseThrow(() -> new IllegalStateException("User not exist"));
+        return this.usersRepositories.findById(id)
+                .orElseThrow(() -> new IllegalStateException("User not exist"));
     }
 
     public UsersModel addUser(UsersModel user) {
@@ -33,7 +33,6 @@ public class UsersDao {
 
     public void deleteUser(String id) {
         boolean exist = usersRepositories.findById(id).isPresent();
-        System.out.println(exist);
         if (!exist) {
             throw new IllegalStateException();
         }
