@@ -21,7 +21,7 @@ public class UserServices {
     }
 
     public ResponseEntity<List<UsersModel>> getUsersList() {
-        return ResponseEntity.ok(usersDao.getUsersList());
+        return ResponseEntity.ok().body(usersDao.getUsersList());
     }
 
     public ResponseEntity<UsersModel> getUserById(String id) {
@@ -34,7 +34,7 @@ public class UserServices {
 
     public ResponseEntity<UsersModel> addUser(UserForCreationDto user) {
         if (user.getRole() != UserRole.USER && user.getRole() != UserRole.ADMIN) {
-            return new ResponseEntity("Role not exist", HttpStatusCode.valueOf(400));
+            return ResponseEntity.badRequest().build();
         }
         UsersModel newUser = new UsersModel(user.getUsername(), user.getEmail(), user.getRole(), user.getPassword());
         try {
