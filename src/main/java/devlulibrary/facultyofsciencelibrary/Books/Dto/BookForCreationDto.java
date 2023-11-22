@@ -4,8 +4,6 @@ import devlulibrary.facultyofsciencelibrary.Category.Model.CategoryModel;
 import org.springframework.web.multipart.MultipartFile;
 
 public class BookForCreationDto {
-
-
     private String bookName;
     private String writer;
     private String description;
