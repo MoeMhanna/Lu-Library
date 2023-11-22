@@ -22,7 +22,6 @@ import java.util.List;
 @Component
 public class BooksService {
     private Boolean checkCategoryValidation(String categoryModel) {
-        //to be added later
         return true;
     }
 
