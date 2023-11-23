@@ -23,8 +23,11 @@ public class CategoryDao {
     }
 
     public CategoryModel addCategory(CategoryModel category) {
-        return this.categoryRepositories.findCategoryByCategoryName(category.getCategoryName())
-                .orElseThrow(() -> new IllegalStateException("Category exists"));
+        boolean exist = categoryRepositories.findCategoryByCategoryName(category.getCategoryName()).isPresent();
+        if (exist) {
+            throw new IllegalStateException();
+        }
+        return categoryRepositories.save(category);
     }
 
     public void deleteCategory(String category) {

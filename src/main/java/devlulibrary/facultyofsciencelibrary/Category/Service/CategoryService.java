@@ -21,11 +21,14 @@ public class CategoryService {
     private CategoryDao categoryDao;
     @Autowired
     public BooksDao booksDao;
+    private List<BooksModel> getBookListFromCategory (String categoryName){
+        return booksDao.getAllBook().stream()
+                .filter(book -> book.getCategory().getCategoryName().equals(categoryName))
+                .toList();
+    }
     public ResponseEntity<List<BooksForResponseDto>> getCategoryBooks(String categoryName){
-        List<BooksModel> booksModelList= booksDao.getAllBook().stream()
-                    .filter(book -> book.getCategory().getCategoryName().equals(categoryName))
-                    .toList();
-        List<BooksForResponseDto> booksForResponseDtoList = new ArrayList<BooksForResponseDto>();
+        List<BooksModel> booksModelList= getBookListFromCategory(categoryName);
+                List<BooksForResponseDto> booksForResponseDtoList = new ArrayList<BooksForResponseDto>();
         for (BooksModel bookModel : booksModelList) {
             booksForResponseDtoList.add(new BooksForResponseDto(bookModel.getId(), bookModel.getBookName(), bookModel.getWriter(), bookModel.getDescription(), bookModel.getCategory()));
         }
@@ -49,9 +52,13 @@ public class CategoryService {
             return ResponseEntity.status(HttpStatusCode.valueOf(409)).build();
         }
     }
-    public ResponseEntity deleteCategory(String category) {
+    public ResponseEntity deleteCategory(String categoryName) {
         try {
-            categoryDao.deleteCategory(category);
+            categoryDao.deleteCategory(categoryName);
+            List<BooksModel> booksModelList= getBookListFromCategory(categoryName);
+            for (BooksModel book: booksModelList) {
+                 booksDao.deleteBookById(book.getId());
+            }
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
