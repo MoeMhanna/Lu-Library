@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Component
@@ -22,11 +21,14 @@ public class CategoryService {
     private CategoryDao categoryDao;
     @Autowired
     public BooksDao booksDao;
-    public ResponseEntity<List<BooksForResponseDto>> getCategoryBooks(String category){
-        List<BooksModel> booksModelList= booksDao.getAllBook().stream()
-                    .filter(book -> book.getCategory().getCategory().equals(category))
-                    .collect(Collectors.toList());
-        List<BooksForResponseDto> booksForResponseDtoList = new ArrayList<BooksForResponseDto>();
+    private List<BooksModel> getBookListFromCategory (String categoryName){
+        return booksDao.getAllBook().stream()
+                .filter(book -> book.getCategory().getCategoryName().equals(categoryName))
+                .toList();
+    }
+    public ResponseEntity<List<BooksForResponseDto>> getCategoryBooks(String categoryName){
+        List<BooksModel> booksModelList= getBookListFromCategory(categoryName);
+                List<BooksForResponseDto> booksForResponseDtoList = new ArrayList<BooksForResponseDto>();
         for (BooksModel bookModel : booksModelList) {
             booksForResponseDtoList.add(new BooksForResponseDto(bookModel.getId(), bookModel.getBookName(), bookModel.getWriter(), bookModel.getDescription(), bookModel.getCategory()));
         }
@@ -45,15 +47,18 @@ public class CategoryService {
     public ResponseEntity<CategoryModel> addCategory(CategoryModel category)
     {
         try {
-            categoryDao.addCategory(category);
-            return ResponseEntity.status(HttpStatusCode.valueOf(201)).build();
+            return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(categoryDao.addCategory(category));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatusCode.valueOf(409)).build();
         }
     }
-    public ResponseEntity deleteCategory(String category) {
+    public ResponseEntity deleteCategory(String categoryName) {
         try {
-            categoryDao.deleteCategory(category);
+            categoryDao.deleteCategory(categoryName);
+            List<BooksModel> booksModelList= getBookListFromCategory(categoryName);
+            for (BooksModel book: booksModelList) {
+                 booksDao.deleteBookById(book.getId());
+            }
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
             return ResponseEntity.notFound().build();

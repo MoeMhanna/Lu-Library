@@ -6,8 +6,6 @@ import devlulibrary.facultyofsciencelibrary.Books.Dto.BooksForResponseDto;
 import devlulibrary.facultyofsciencelibrary.Books.Model.BooksModel;
 import devlulibrary.facultyofsciencelibrary.Category.Dao.CategoryDao;
 import devlulibrary.facultyofsciencelibrary.Category.Model.CategoryModel;
-import devlulibrary.facultyofsciencelibrary.Category.Service.CategoryService;
-import jakarta.validation.constraints.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -31,7 +29,7 @@ public class BooksService {
     private CategoryDao categoryDao;
     private Boolean checkCategoryValidation(CategoryModel categoryModel) {
         try{
-            CategoryModel check=categoryDao.getCategoryId(categoryModel.getCategory());
+            CategoryModel check=categoryDao.getCategoryId(categoryModel.getCategoryName());
             return true;
         }catch(Exception e){
             return false;
