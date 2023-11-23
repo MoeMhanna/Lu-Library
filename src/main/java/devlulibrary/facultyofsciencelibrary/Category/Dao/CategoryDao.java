@@ -19,18 +19,18 @@ public class CategoryDao {
     }
 
     public CategoryModel getCategoryId(String category) {
-        return this.categoryRepositories.findCategoryModelByCategory(category).orElseThrow(() -> new IllegalStateException("Category does not exist"));
+        return this.categoryRepositories.findCategoryByCategoryName(category).orElseThrow(() -> new IllegalStateException("Category does not exist"));
     }
 
     public CategoryModel addCategory(CategoryModel category) {
-        return this.categoryRepositories.findCategoryModelByCategory(category.getCategoryName())
-                .orElseThrow(() -> new IllegalStateException("User not exist"));
+        return this.categoryRepositories.findCategoryByCategoryName(category.getCategoryName())
+                .orElseThrow(() -> new IllegalStateException("Category exists"));
     }
 
     public void deleteCategory(String category) {
-        if (categoryRepositories.findCategoryModelByCategory(category).isEmpty()) {
+        if (categoryRepositories.findCategoryByCategoryName(category).isEmpty()) {
             throw new IllegalStateException();
         }
-        categoryRepositories.deleteCategoryModelByCategory(category);
+        categoryRepositories.deleteCategoryByCategoryName(category);
     }
 }

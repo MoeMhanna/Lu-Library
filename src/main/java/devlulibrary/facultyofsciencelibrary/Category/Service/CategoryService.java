@@ -44,8 +44,7 @@ public class CategoryService {
     public ResponseEntity<CategoryModel> addCategory(CategoryModel category)
     {
         try {
-            categoryDao.addCategory(category);
-            return ResponseEntity.status(HttpStatusCode.valueOf(201)).build();
+            return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(categoryDao.addCategory(category));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatusCode.valueOf(409)).build();
         }
