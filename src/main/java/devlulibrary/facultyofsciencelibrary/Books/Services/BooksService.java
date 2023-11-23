@@ -4,6 +4,8 @@ import devlulibrary.facultyofsciencelibrary.Books.Dao.BooksDao;
 import devlulibrary.facultyofsciencelibrary.Books.Dto.BookForCreationDto;
 import devlulibrary.facultyofsciencelibrary.Books.Dto.BooksForResponseDto;
 import devlulibrary.facultyofsciencelibrary.Books.Model.BooksModel;
+import devlulibrary.facultyofsciencelibrary.Category.Dao.CategoryDao;
+import devlulibrary.facultyofsciencelibrary.Category.Model.CategoryModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -21,12 +23,18 @@ import java.util.List;
 @Service
 @Component
 public class BooksService {
-    private Boolean checkCategoryValidation(String categoryModel) {
-        return true;
-    }
-
     @Autowired
     private BooksDao booksDao;
+    @Autowired
+    private CategoryDao categoryDao;
+    private Boolean checkCategoryValidation(CategoryModel categoryModel) {
+        try{
+            CategoryModel check=categoryDao.getCategoryId(categoryModel.getCategoryName());
+            return true;
+        }catch(Exception e){
+            return false;
+        }
+    }
 
     public ResponseEntity<List<BooksForResponseDto>> findAllBooks() {
         List<BooksModel> booksModelList = booksDao.getAllBook();
@@ -53,9 +61,9 @@ public class BooksService {
 
     public ResponseEntity<Resource> downloadFile(String id) {
         try {
-            BooksModel bookOptional = booksDao.getBookById(id);
-            String bookName = bookOptional.getBookName();
-            byte[] fileData = bookOptional.getFileData();
+            BooksModel book = booksDao.getBookById(id);
+            String bookName = book.getBookName();
+            byte[] fileData = book.getFileData();
             return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/pdf")).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + bookName + "\"").body(new ByteArrayResource(fileData));
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
@@ -63,7 +71,7 @@ public class BooksService {
     }
 
     public ResponseEntity<BooksModel> uploadBook(BookForCreationDto book) {
-        if (!checkCategoryValidation(book.getBookName())) {
+        if (!checkCategoryValidation(book.getCategory())) {
             return ResponseEntity.badRequest().build();
         }
         if (book.getFile() == null) {

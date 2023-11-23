@@ -26,4 +26,7 @@ public class BooksDao {
         return bookRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Book not exist"));
     }
+    public void deleteBookById(String id){
+        bookRepository.deleteById(id);
+    }
 }

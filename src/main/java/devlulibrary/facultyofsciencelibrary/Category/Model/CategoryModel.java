@@ -1,28 +1,21 @@
 package devlulibrary.facultyofsciencelibrary.Category.Model;
 
-import java.util.UUID;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document
 public class CategoryModel {
-    private String category;
-    private String id;
+    private String categoryName;
+    public CategoryModel(){}
     public CategoryModel(String category) {
-        id = UUID.randomUUID().toString();
-        this.category = category;
+        this.categoryName = category;
     }
 
-    public String getCategory() {
-        return category;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }
