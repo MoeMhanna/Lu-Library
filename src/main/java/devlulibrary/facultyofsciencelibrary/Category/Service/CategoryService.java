@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Component
@@ -22,10 +21,10 @@ public class CategoryService {
     private CategoryDao categoryDao;
     @Autowired
     public BooksDao booksDao;
-    public ResponseEntity<List<BooksForResponseDto>> getCategoryBooks(String category){
+    public ResponseEntity<List<BooksForResponseDto>> getCategoryBooks(String categoryName){
         List<BooksModel> booksModelList= booksDao.getAllBook().stream()
-                    .filter(book -> book.getCategory().getCategory().equals(category))
-                    .collect(Collectors.toList());
+                    .filter(book -> book.getCategory().getCategoryName().equals(categoryName))
+                    .toList();
         List<BooksForResponseDto> booksForResponseDtoList = new ArrayList<BooksForResponseDto>();
         for (BooksModel bookModel : booksModelList) {
             booksForResponseDtoList.add(new BooksForResponseDto(bookModel.getId(), bookModel.getBookName(), bookModel.getWriter(), bookModel.getDescription(), bookModel.getCategory()));

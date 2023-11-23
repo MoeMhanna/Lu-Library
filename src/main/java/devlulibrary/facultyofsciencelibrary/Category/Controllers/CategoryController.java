@@ -23,9 +23,9 @@ public class CategoryController {
     public ResponseEntity<CategoryModel> getCategoryById(@PathVariable String id){
         return this.categoryService.getCategoryById(id);
     }
-    @GetMapping("/{id}/books")
-    public ResponseEntity<List<BooksForResponseDto>> getCategoryBooks(@PathVariable String id){
-        return this.categoryService.getCategoryBooks(id);
+    @GetMapping("/{categoryName}/books")
+    public ResponseEntity<List<BooksForResponseDto>> getCategoryBooks(@PathVariable String categoryName){
+        return this.categoryService.getCategoryBooks(categoryName);
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<CategoryModel> deleteCategory(String id){
