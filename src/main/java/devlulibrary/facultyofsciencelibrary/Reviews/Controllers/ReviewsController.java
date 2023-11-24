@@ -1,5 +1,7 @@
 package devlulibrary.facultyofsciencelibrary.Reviews.Controllers;
 
+import devlulibrary.facultyofsciencelibrary.Reviews.Dto.ReviewsForCreationDto;
+import devlulibrary.facultyofsciencelibrary.Reviews.Dto.ReviewsForResponseDto;
 import devlulibrary.facultyofsciencelibrary.Reviews.Model.ReviewsModel;
 import devlulibrary.facultyofsciencelibrary.Reviews.Services.ReviewsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +16,15 @@ public class ReviewsController {
     @Autowired
     private ReviewsService reviewsService;
     @GetMapping
-    public ResponseEntity<List<ReviewsModel>> reviewsList(){
+    public ResponseEntity<List<ReviewsForResponseDto>> reviewsList(){
         return this.reviewsService.getReviewsList();
     }
     @GetMapping("/{id}")
-    public ResponseEntity<ReviewsModel> getReviewById(@PathVariable String id){
+    public ResponseEntity<ReviewsForResponseDto> getReviewById(@PathVariable String id){
         return this.reviewsService.getReviewById(id);
     }
     @GetMapping("/{id}/books")
-    public ResponseEntity<List<ReviewsModel>> getBookReviews(@PathVariable String id){
+    public ResponseEntity<List<ReviewsForResponseDto>> getBookReviews(@PathVariable String id){
         return this.reviewsService.getBookReviews(id);
     }
     @DeleteMapping("/{id}")
@@ -30,7 +32,7 @@ public class ReviewsController {
         return this.reviewsService.deleteReview(id);
     }
     @PostMapping
-    public ResponseEntity<ReviewsModel> addReview(@RequestBody ReviewsModel review){
+    public ResponseEntity<ReviewsModel> addReview(@RequestBody ReviewsForCreationDto review){
         return this.reviewsService.addReview(review);
     }
 }

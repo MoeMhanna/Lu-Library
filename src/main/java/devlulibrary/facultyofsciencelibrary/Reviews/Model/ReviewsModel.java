@@ -54,6 +54,14 @@ public class ReviewsModel {
         this.userId = userId;
     }
 
+    public String getId() {
+        return Id;
+    }
+
+    public void setId(String id) {
+        Id = id;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

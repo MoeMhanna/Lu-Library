@@ -5,6 +5,8 @@ import devlulibrary.facultyofsciencelibrary.Books.Dto.BooksForResponseDto;
 import devlulibrary.facultyofsciencelibrary.Books.Model.BooksModel;
 import devlulibrary.facultyofsciencelibrary.Category.Model.CategoryModel;
 import devlulibrary.facultyofsciencelibrary.Reviews.Dao.ReviewsDao;
+import devlulibrary.facultyofsciencelibrary.Reviews.Dto.ReviewsForCreationDto;
+import devlulibrary.facultyofsciencelibrary.Reviews.Dto.ReviewsForResponseDto;
 import devlulibrary.facultyofsciencelibrary.Reviews.Model.ReviewsModel;
 import devlulibrary.facultyofsciencelibrary.Users.Dao.UsersDao;
 import devlulibrary.facultyofsciencelibrary.Users.model.UsersModel;
@@ -36,29 +38,42 @@ public class ReviewsService {
             return false;
         }
     }
-    public ResponseEntity<List<ReviewsModel>> getBookReviews(String id){
+    private List<ReviewsForResponseDto> getResponseDto(List<ReviewsModel> reviewsList){
+        if (reviewsList.isEmpty()) {
+            ResponseEntity.notFound().build();
+        }
+        List<ReviewsForResponseDto> reviewResponseDtoList=new ArrayList<>();
+        for (ReviewsModel review : reviewsList) {
+            reviewResponseDtoList.add(new ReviewsForResponseDto(review.getId(),review.getBookId(), review.getReview(), review.getUsername()));
+        }
+        return reviewResponseDtoList;
+    }
+    public ResponseEntity<List<ReviewsForResponseDto>> getBookReviews(String id){
         List<ReviewsModel> reviews= reviewsDao.getAllReviews().stream()
                 .filter(review -> review.getBookId().equals(id))
                 .collect(Collectors.toList());
-        return ResponseEntity.ok(reviews);
+        List<ReviewsForResponseDto> reviewResponseDtosList=getResponseDto(reviews);
+        return ResponseEntity.ok(reviewResponseDtosList);
     }
-    public ResponseEntity<List<ReviewsModel>> getReviewsList() {
-        return ResponseEntity.ok(reviewsDao.getAllReviews());
+    public ResponseEntity<List<ReviewsForResponseDto>> getReviewsList() {
+        List<ReviewsForResponseDto> reviewResponseDtoList=getResponseDto(reviewsDao.getAllReviews());
+        return ResponseEntity.ok(reviewResponseDtoList);
     }
-    public ResponseEntity<ReviewsModel> getReviewById(String id) {
+    public ResponseEntity<ReviewsForResponseDto> getReviewById(String id) {
         try {
-            return ResponseEntity.ok(reviewsDao.getReviewId(id));
+            ReviewsModel reviewsModel=reviewsDao.getReviewId(id);
+            return ResponseEntity.ok(new ReviewsForResponseDto(reviewsModel.getId(), reviewsModel.getBookId(), reviewsModel.getReview(), reviewsModel.getUsername()));
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
     }
-    public ResponseEntity<ReviewsModel> addReview(ReviewsModel review)
+    public ResponseEntity<ReviewsModel> addReview(ReviewsForCreationDto review)
     {
-        if (!checkReviewValidation(review.getBookId(),review.getUsername())) {
+        if (!checkReviewValidation(review.getBookId(),review.getUserId())) {
             return ResponseEntity.badRequest().build();
         }
         try {
-            reviewsDao.addReview(review);
+            reviewsDao.addReview(new ReviewsModel(review.getBookId(), review.getReview(),usersDao.getUserById(review.getUserId()).getUsername() , review.getUserId()));
             return ResponseEntity.status(HttpStatusCode.valueOf(201)).build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatusCode.valueOf(409)).build();
