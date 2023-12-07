@@ -41,7 +41,7 @@ public class BookController {
     public ResponseEntity<BooksModel> uploadBook(@RequestParam("bookName") String bookName,
                                                  @RequestParam("writer") String writer,
                                                  @RequestParam("description") String description,
-                                                 @RequestParam("category") CategoryModel category,
+                                                 @RequestParam("category") String category,
                                                  @RequestParam("file") MultipartFile file) {
         return this.booksService.uploadBook(bookName, writer, description, category, file);
     }

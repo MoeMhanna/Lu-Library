@@ -4,6 +4,7 @@ import devlulibrary.facultyofsciencelibrary.Books.Dao.BooksDao;
 import devlulibrary.facultyofsciencelibrary.Books.Dto.BooksForResponseDto;
 import devlulibrary.facultyofsciencelibrary.Books.Model.BooksModel;
 import devlulibrary.facultyofsciencelibrary.Category.Dao.CategoryDao;
+import devlulibrary.facultyofsciencelibrary.Category.Dto.CategoryForCreationDto;
 import devlulibrary.facultyofsciencelibrary.Category.Model.CategoryModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
@@ -44,10 +45,10 @@ public class CategoryService {
             return ResponseEntity.notFound().build();
         }
     }
-    public ResponseEntity<CategoryModel> addCategory(CategoryModel category)
+    public ResponseEntity<CategoryModel> addCategory(CategoryForCreationDto categoryForCreationDto)
     {
         try {
-            return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(categoryDao.addCategory(category));
+            return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(categoryDao.addCategory(new CategoryModel(categoryForCreationDto.getCategoryName(),0)));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatusCode.valueOf(409)).build();
         }

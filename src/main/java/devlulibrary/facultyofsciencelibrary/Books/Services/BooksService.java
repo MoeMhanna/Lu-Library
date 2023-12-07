@@ -29,9 +29,9 @@ public class BooksService {
     @Autowired
     private CategoryDao categoryDao;
 
-    private Boolean checkCategoryValidation(CategoryModel categoryModel) {
+    private Boolean checkCategoryValidation(String categoryName) {
         try {
-            CategoryModel check = categoryDao.getCategoryId(categoryModel.getCategoryName());
+            CategoryModel check = categoryDao.getCategoryId(categoryName);
             return true;
         } catch (Exception e) {
             return false;
@@ -75,9 +75,9 @@ public class BooksService {
     public ResponseEntity<BooksModel> uploadBook(String bookName,
                                                  String writer,
                                                  String description,
-                                                 CategoryModel category,
+                                                 String categoryName,
                                                  MultipartFile file) {
-        if (!checkCategoryValidation(category)) {
+        if (!checkCategoryValidation(categoryName)) {
             return ResponseEntity.badRequest().build();
         }
         if (file == null) {
@@ -89,8 +89,12 @@ public class BooksService {
             bookModel.setFileData(file.getBytes());
             bookModel.setWriter(writer);
             bookModel.setDescription(description);
-            bookModel.setCategory(new CategoryModel("Math"));
 
+            CategoryModel categoryModel= categoryDao.getCategoryId(categoryName);
+            categoryModel.setBooksNumber(categoryModel.getBooksNumber()+1);
+            categoryDao.updateCategory(categoryModel);
+
+            bookModel.setCategory(categoryModel);
             return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(booksDao.storeFile(bookModel));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(bookModel);
