@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -27,11 +28,12 @@ public class BooksService {
     private BooksDao booksDao;
     @Autowired
     private CategoryDao categoryDao;
+
     private Boolean checkCategoryValidation(CategoryModel categoryModel) {
-        try{
-            CategoryModel check=categoryDao.getCategoryId(categoryModel.getCategoryName());
+        try {
+            CategoryModel check = categoryDao.getCategoryId(categoryModel.getCategoryName());
             return true;
-        }catch(Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
@@ -70,24 +72,30 @@ public class BooksService {
         }
     }
 
-    public ResponseEntity<BooksModel> uploadBook(BookForCreationDto book) {
-        if (!checkCategoryValidation(book.getCategory())) {
+    public ResponseEntity<BooksModel> uploadBook(String bookName,
+                                                 String writer,
+                                                 String description,
+                                                 CategoryModel category,
+                                                 MultipartFile file) {
+        if (!checkCategoryValidation(category)) {
             return ResponseEntity.badRequest().build();
         }
-        if (book.getFile() == null) {
+        if (file == null) {
             return ResponseEntity.badRequest().build();
         }
-        MultipartFile file = book.getFile();
         BooksModel bookModel = new BooksModel();
         try {
             bookModel.setBookName(file.getOriginalFilename());
             bookModel.setFileData(file.getBytes());
-            bookModel.setWriter(book.getWriter());
-            bookModel.setDescription(book.getDescription());
-            bookModel.setCategory(book.getCategory());
+            bookModel.setWriter(writer);
+            bookModel.setDescription(description);
+            bookModel.setCategory(new CategoryModel("Math"));
+
             return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(booksDao.storeFile(bookModel));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(bookModel);
         }
     }
+
+
 }

@@ -7,14 +7,14 @@ public class BookForCreationDto {
     private String bookName;
     private String writer;
     private String description;
-    private CategoryModel category;
+//    private CategoryModel category;
     private MultipartFile file;
 
     public BookForCreationDto(String bookName, String writer, String description, CategoryModel category, MultipartFile file) {
         this.bookName = bookName;
         this.writer = writer;
         this.description = description;
-        this.category = category;
+//        this.category = category;
         this.file = file;
     }
 
@@ -42,13 +42,13 @@ public class BookForCreationDto {
         this.description = description;
     }
 
-    public CategoryModel getCategory() {
-        return category;
-    }
-
-    public void setCategory(CategoryModel category) {
-        this.category = category;
-    }
+//    public CategoryModel getCategory() {
+//        return category;
+//    }
+//
+//    public void setCategory(CategoryModel category) {
+//        this.category = category;
+//    }
 
     public MultipartFile getFile() {
         return file;
