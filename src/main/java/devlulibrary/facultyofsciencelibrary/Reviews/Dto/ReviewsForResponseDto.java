@@ -5,12 +5,18 @@ public class ReviewsForResponseDto {
     private String bookId;
     private String review;
     private String username;
+    private int starLevel;
 
-    public ReviewsForResponseDto(String id,String bookId,String review,String username) {
+    public ReviewsForResponseDto(String id, String bookId, String review, String username, int starLevel) {
         this.id = id;
         this.bookId = bookId;
         this.review = review;
         this.username = username;
+        this.starLevel = starLevel;
+    }
+
+    public int getStarLevel() {
+        return starLevel;
     }
 
     public String getReview() {

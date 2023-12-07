@@ -10,16 +10,20 @@ public class ReviewsModel {
     @Id
     private String Id;
     private String bookId;
-    private String review;
-    private String username;
     private String userId;
+    private String username;
+    private String review;
+    private int starLevel;
 
-    public ReviewsModel(){}
-    public ReviewsModel(String bookId,String review,String username,String userId) {
-        this.bookId=bookId;
-        this.review=review;
-        this.username=username;
-        this.userId=userId;
+    public ReviewsModel() {
+    }
+
+    public ReviewsModel(String bookId, String review, String username, String userId, int starLevel) {
+        this.bookId = bookId;
+        this.review = review;
+        this.username = username;
+        this.userId = userId;
+        this.starLevel = starLevel;
     }
 
     public String getBookId() {
@@ -60,6 +64,14 @@ public class ReviewsModel {
 
     public void setId(String id) {
         Id = id;
+    }
+
+    public int getStarLevel() {
+        return starLevel;
+    }
+
+    public void setStarLevel(int starLevel) {
+        this.starLevel = starLevel;
     }
 
     @Override

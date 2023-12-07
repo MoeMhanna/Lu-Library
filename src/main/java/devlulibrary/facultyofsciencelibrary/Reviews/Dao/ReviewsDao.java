@@ -23,12 +23,4 @@ public class ReviewsDao {
     public ReviewsModel addReview(ReviewsModel review) {
         return reviewsRepositories.save(review);
     }
-
-    public void deleteReview(String id) {
-        boolean exist = reviewsRepositories.findById(id).isPresent();
-        if (!exist) {
-            throw new IllegalStateException();
-        }
-        reviewsRepositories.deleteById(id);
-    }
 }

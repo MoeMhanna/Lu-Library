@@ -1,14 +1,22 @@
 package devlulibrary.facultyofsciencelibrary.Reviews.Dto;
 
 public class ReviewsForCreationDto {
-    private String bookId;
     private String review;
     private String userId;
+    private int starsLevel;
 
-    public ReviewsForCreationDto(String bookId,String review,String userId) {
-        this.bookId = bookId;
+    public ReviewsForCreationDto(String review, String userId, int starsCount) {
         this.review = review;
         this.userId = userId;
+        this.starsLevel = starsCount;
+    }
+
+    public int getStarsLevel() {
+        return starsLevel;
+    }
+
+    public void setStarsLevel(int starsLevel) {
+        this.starsLevel = starsLevel;
     }
 
     public String getReview() {
@@ -17,14 +25,6 @@ public class ReviewsForCreationDto {
 
     public void setReview(String review) {
         this.review = review;
-    }
-
-    public String getBookId() {
-        return bookId;
-    }
-
-    public void setBookId(String bookId) {
-        this.bookId = bookId;
     }
 
     public String getUserId() {

@@ -22,6 +22,10 @@ public class CategoryDao {
         return this.categoryRepositories.findCategoryByCategoryName(category).orElseThrow(() -> new IllegalStateException("Category does not exist"));
     }
 
+    public CategoryModel updateCategory(CategoryModel category) {
+        return this.categoryRepositories.save(category);
+    }
+
     public CategoryModel addCategory(CategoryModel category) {
         boolean exist = categoryRepositories.findCategoryByCategoryName(category.getCategoryName()).isPresent();
         if (exist) {

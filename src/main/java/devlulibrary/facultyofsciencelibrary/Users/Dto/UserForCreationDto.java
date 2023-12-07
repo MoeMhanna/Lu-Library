@@ -1,16 +1,17 @@
 package devlulibrary.facultyofsciencelibrary.Users.Dto;
 
 import devlulibrary.facultyofsciencelibrary.Users.Enumerables.UserRole;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
 
 public class UserForCreationDto {
-    @NotNull
+    @NotEmpty
     private final String username;
-    @NotNull
+    @NotEmpty
+    @Email
     private final String email;
-    @NotNull
     private final UserRole role;
-    @NotNull
+    @NotEmpty
     private final String Password;
 
     public UserForCreationDto(String username, String email, UserRole role, String password) {

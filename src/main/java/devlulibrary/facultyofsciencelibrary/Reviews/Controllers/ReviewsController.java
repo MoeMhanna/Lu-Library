@@ -2,6 +2,7 @@ package devlulibrary.facultyofsciencelibrary.Reviews.Controllers;
 
 import devlulibrary.facultyofsciencelibrary.Reviews.Dto.ReviewsForCreationDto;
 import devlulibrary.facultyofsciencelibrary.Reviews.Dto.ReviewsForResponseDto;
+import devlulibrary.facultyofsciencelibrary.Reviews.Dto.StarsCountDto;
 import devlulibrary.facultyofsciencelibrary.Reviews.Model.ReviewsModel;
 import devlulibrary.facultyofsciencelibrary.Reviews.Services.ReviewsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,24 +16,19 @@ import java.util.List;
 public class ReviewsController {
     @Autowired
     private ReviewsService reviewsService;
-    @GetMapping
-    public ResponseEntity<List<ReviewsForResponseDto>> reviewsList(){
-        return this.reviewsService.getReviewsList();
+
+    @GetMapping("stars-percentages")
+    public ResponseEntity<StarsCountDto> reviewsStarsCount() {
+        return this.reviewsService.getReviewsPercentages();
     }
-    @GetMapping("/{id}")
-    public ResponseEntity<ReviewsForResponseDto> getReviewById(@PathVariable String id){
-        return this.reviewsService.getReviewById(id);
-    }
-    @GetMapping("/{id}/books")
-    public ResponseEntity<List<ReviewsForResponseDto>> getBookReviews(@PathVariable String id){
+
+    @GetMapping("/{id}/book-reviews")
+    public ResponseEntity<List<ReviewsForResponseDto>> getBookReviews(@PathVariable String id) {
         return this.reviewsService.getBookReviews(id);
     }
-    @DeleteMapping("/{id}")
-    public ResponseEntity deleteReview(String id){
-        return this.reviewsService.deleteReview(id);
-    }
-    @PostMapping
-    public ResponseEntity<ReviewsModel> addReview(@RequestBody ReviewsForCreationDto review){
-        return this.reviewsService.addReview(review);
+
+    @PostMapping("/{bookId}")
+    public ResponseEntity<ReviewsModel> addReview(@PathVariable String bookId, @RequestBody ReviewsForCreationDto review) {
+        return this.reviewsService.addReview(bookId, review);
     }
 }

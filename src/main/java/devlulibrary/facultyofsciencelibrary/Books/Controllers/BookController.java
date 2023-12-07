@@ -4,9 +4,11 @@ import devlulibrary.facultyofsciencelibrary.Books.Dto.BookForCreationDto;
 import devlulibrary.facultyofsciencelibrary.Books.Dto.BooksForResponseDto;
 import devlulibrary.facultyofsciencelibrary.Books.Model.BooksModel;
 import devlulibrary.facultyofsciencelibrary.Books.Services.BooksService;
+import devlulibrary.facultyofsciencelibrary.Category.Model.CategoryModel;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,7 +38,11 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity<BooksModel> uploadBook(@RequestBody BookForCreationDto book) {
-        return this.booksService.uploadBook(book);
+    public ResponseEntity<BooksModel> uploadBook(@RequestParam("bookName") String bookName,
+                                                 @RequestParam("writer") String writer,
+                                                 @RequestParam("description") String description,
+                                                 @RequestParam("category") CategoryModel category,
+                                                 @RequestParam("file") MultipartFile file) {
+        return this.booksService.uploadBook(bookName, writer, description, category, file);
     }
 }
