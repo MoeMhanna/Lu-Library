@@ -19,6 +19,7 @@ public class UsersDao {
     }
 
     public UsersModel getUserById(String id) {
+        /* lambda expression that provides the exception to be thrown in case the user is not found in the repository.  */
         return this.usersRepositories.findById(id)
                 .orElseThrow(() -> new IllegalStateException("User not exist"));
     }

@@ -23,6 +23,7 @@ public class BooksDao {
     }
 
     public BooksModel getBookById(String id) {
+        /* lambda expression that provide the exception to be thrown in case the book is not found in the repository */
         return bookRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Book not exist"));
     }

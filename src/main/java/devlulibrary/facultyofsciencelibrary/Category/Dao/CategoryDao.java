@@ -19,6 +19,7 @@ public class CategoryDao {
     }
 
     public CategoryModel getCategoryId(String category) {
+        /*lambda expression that provide the exception to be thrown in case the category is not found in the repository */
         return this.categoryRepositories.findCategoryByCategoryName(category).orElseThrow(() -> new IllegalStateException("Category does not exist"));
     }
 

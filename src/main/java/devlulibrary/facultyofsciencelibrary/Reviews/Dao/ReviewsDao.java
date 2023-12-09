@@ -17,6 +17,7 @@ public class ReviewsDao {
     }
 
     public ReviewsModel getReviewId(String id) {
+        /* lambda expression that provide the exception to be thrown in case the review is not found in the repository.  */
         return reviewsRepositories.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Review does not exist"));
     }

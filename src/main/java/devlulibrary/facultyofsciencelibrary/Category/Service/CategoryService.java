@@ -23,6 +23,9 @@ public class CategoryService {
     @Autowired
     public BooksDao booksDao;
     private List<BooksModel> getBookListFromCategory (String categoryName){
+        /* Java streams to process the collection of books obtained from booksDao.
+        It filters the books based on a specified categoryName using a lambda expression
+        within the filter operation and then collects the filtered results into a List using the toList() method. */
         return booksDao.getAllBook().stream()
                 .filter(book -> book.getCategory().getCategoryName().equals(categoryName))
                 .toList();
