@@ -86,7 +86,7 @@ public class BooksService {
         }
         BooksModel bookModel = new BooksModel();
         try {
-            bookModel.setBookName(file.getOriginalFilename());
+            bookModel.setBookName(bookName);
             bookModel.setFileData(file.getBytes());
             bookModel.setWriter(writer);
             bookModel.setDescription(description);
