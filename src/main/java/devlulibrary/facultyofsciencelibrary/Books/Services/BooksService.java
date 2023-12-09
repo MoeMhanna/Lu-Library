@@ -1,7 +1,6 @@
 package devlulibrary.facultyofsciencelibrary.Books.Services;
 
 import devlulibrary.facultyofsciencelibrary.Books.Dao.BooksDao;
-import devlulibrary.facultyofsciencelibrary.Books.Dto.BookForCreationDto;
 import devlulibrary.facultyofsciencelibrary.Books.Dto.BooksForResponseDto;
 import devlulibrary.facultyofsciencelibrary.Books.Model.BooksModel;
 import devlulibrary.facultyofsciencelibrary.Category.Dao.CategoryDao;
@@ -15,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -66,6 +64,9 @@ public class BooksService {
             BooksModel book = booksDao.getBookById(id);
             String bookName = book.getBookName();
             byte[] fileData = book.getFileData();
+
+            incrementCategoryDownloadsNumber(book.getCategory().getCategoryName());
+
             return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/pdf")).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + bookName + "\"").body(new ByteArrayResource(fileData));
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
@@ -90,9 +91,7 @@ public class BooksService {
             bookModel.setWriter(writer);
             bookModel.setDescription(description);
 
-            CategoryModel categoryModel= categoryDao.getCategoryId(categoryName);
-            categoryModel.setBooksNumber(categoryModel.getBooksNumber()+1);
-            categoryDao.updateCategory(categoryModel);
+            CategoryModel categoryModel = incrementCategoryBookNumber(categoryName);
 
             bookModel.setCategory(categoryModel);
             return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(booksDao.storeFile(bookModel));
@@ -101,5 +100,18 @@ public class BooksService {
         }
     }
 
+    private CategoryModel incrementCategoryBookNumber(String categoryName) {
+        CategoryModel categoryModel = categoryDao.getCategoryId(categoryName);
+        categoryModel.setBooksNumber(categoryModel.getBooksNumber() + 1);
+        categoryDao.deleteCategory(categoryModel.getCategoryName());
+        categoryDao.updateCategory(categoryModel);
+        return categoryModel;
+    }
 
+    private void incrementCategoryDownloadsNumber(String categoryName) {
+        CategoryModel categoryModel = categoryDao.getCategoryId(categoryName);
+        categoryModel.setDownloadNumber(categoryModel.getDownloadNumber() + 1);
+        categoryDao.deleteCategory(categoryModel.getCategoryName());
+        categoryDao.updateCategory(categoryModel);
+    }
 }

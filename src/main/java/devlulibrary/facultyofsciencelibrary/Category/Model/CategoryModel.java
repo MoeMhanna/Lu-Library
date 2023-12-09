@@ -7,13 +7,15 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class CategoryModel {
     private String categoryName;
     private int booksNumber;
+    private int downloadNumber;
 
-    public CategoryModel() {
+    public CategoryModel(String category, int booksNumber, int downloadNumber) {
+        this.categoryName = category;
+        this.booksNumber = booksNumber;
+        this.downloadNumber = downloadNumber;
     }
 
-    public CategoryModel(String category, int booksNumber) {
-        this.categoryName = category;
-        this.booksNumber=booksNumber;
+    public CategoryModel() {
     }
 
     public String getCategoryName() {
@@ -30,5 +32,13 @@ public class CategoryModel {
 
     public void setBooksNumber(int booksNumber) {
         this.booksNumber = booksNumber;
+    }
+
+    public int getDownloadNumber() {
+        return downloadNumber;
+    }
+
+    public void setDownloadNumber(int downloadNumber) {
+        this.downloadNumber = downloadNumber;
     }
 }

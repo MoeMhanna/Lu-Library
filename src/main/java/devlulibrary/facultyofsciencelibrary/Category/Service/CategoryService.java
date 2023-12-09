@@ -45,10 +45,9 @@ public class CategoryService {
             return ResponseEntity.notFound().build();
         }
     }
-    public ResponseEntity<CategoryModel> addCategory(CategoryForCreationDto categoryForCreationDto)
-    {
+    public ResponseEntity<CategoryModel> addCategory(CategoryForCreationDto categoryForCreationDto) {
         try {
-            return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(categoryDao.addCategory(new CategoryModel(categoryForCreationDto.getCategoryName(),0)));
+            return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(categoryDao.addCategory(new CategoryModel(categoryForCreationDto.getCategoryName(),0, 0)));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatusCode.valueOf(409)).build();
         }

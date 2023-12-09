@@ -7,14 +7,14 @@ public class BooksForResponseDto {
     private String bookName;
     private String writer;
     private String description;
-    private CategoryModel category;
+    private String category;
 
     public BooksForResponseDto(String id, String bookName, String writer, String description, CategoryModel category) {
         this.id = id;
         this.bookName = bookName;
         this.writer = writer;
         this.description = description;
-        this.category = category;
+        this.category = category.getCategoryName();
     }
 
     public BooksForResponseDto() {
@@ -48,11 +48,11 @@ public class BooksForResponseDto {
         this.description = description;
     }
 
-    public CategoryModel getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(CategoryModel category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 }
