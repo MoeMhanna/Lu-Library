@@ -5,6 +5,7 @@ import devlulibrary.facultyofsciencelibrary.Books.Dto.BooksForResponseDto;
 import devlulibrary.facultyofsciencelibrary.Books.Model.BooksModel;
 import devlulibrary.facultyofsciencelibrary.Books.Services.BooksService;
 import devlulibrary.facultyofsciencelibrary.Category.Model.CategoryModel;
+import devlulibrary.facultyofsciencelibrary.Category.Service.CategoryService;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,13 +18,18 @@ import java.util.Optional;
 @RequestMapping("/Books")
 public class BookController {
     private final BooksService booksService;
+    private final CategoryService categoryService;
 
-    BookController(BooksService bookService) {
+    BookController(BooksService bookService,
+                   CategoryService categoryService) {
         this.booksService = bookService;
+        this.categoryService = categoryService;
     }
 
     @GetMapping()
-    public ResponseEntity<List<BooksForResponseDto>> getAllBook() {
+    public ResponseEntity<List<BooksForResponseDto>> getAllBook(@RequestParam(name = "categoryId", required = false) String categoryId) {
+        if (categoryId != null)
+            return categoryService.getCategoryBooks(categoryId);
         return booksService.findAllBooks();
     }
 
