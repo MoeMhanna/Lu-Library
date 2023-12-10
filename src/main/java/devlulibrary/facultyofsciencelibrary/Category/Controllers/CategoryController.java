@@ -1,5 +1,6 @@
 package devlulibrary.facultyofsciencelibrary.Category.Controllers;
 import devlulibrary.facultyofsciencelibrary.Books.Dto.BooksForResponseDto;
+import devlulibrary.facultyofsciencelibrary.Category.Dto.CategoryForCreationDto;
 import devlulibrary.facultyofsciencelibrary.Category.Model.CategoryModel;
 import devlulibrary.facultyofsciencelibrary.Category.Service.CategoryService;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class CategoryController {
         return this.categoryService.deleteCategory(id);
     }
     @PostMapping
-    public ResponseEntity<CategoryModel> addCategory(@RequestBody CategoryModel category){
+    public ResponseEntity<CategoryModel> addCategory(@RequestBody CategoryForCreationDto category){
         return this.categoryService.addCategory(category);
     }
 }

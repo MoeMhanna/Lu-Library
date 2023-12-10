@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+// Data Access Object (Dao) is a design pattern that provides an abstract interface to some type of database or other persistence mechanism.
+// and it is also a proxy fot the database. so it is respecting Proxy design pattern.
 public class UsersDao {
     private final UsersRepositories usersRepositories;
 
@@ -19,6 +21,7 @@ public class UsersDao {
     }
 
     public UsersModel getUserById(String id) {
+        /* lambda expression that provides the exception to be thrown in case the user is not found in the repository.  */
         return this.usersRepositories.findById(id)
                 .orElseThrow(() -> new IllegalStateException("User not exist"));
     }

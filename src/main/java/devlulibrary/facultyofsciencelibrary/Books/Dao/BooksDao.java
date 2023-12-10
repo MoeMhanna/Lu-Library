@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+// Data Access Object (Dao) is a design pattern that provides an abstract interface to some type of database or other persistence mechanism.
+// and it is also a proxy fot the database. so it is respecting Proxy design pattern.
 public class BooksDao {
     @Autowired
     private BookRepository bookRepository;
@@ -23,6 +25,7 @@ public class BooksDao {
     }
 
     public BooksModel getBookById(String id) {
+        /* lambda expression that provide the exception to be thrown in case the book is not found in the repository */
         return bookRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Book not exist"));
     }

@@ -1,7 +1,6 @@
 package devlulibrary.facultyofsciencelibrary.Books.Services;
 
 import devlulibrary.facultyofsciencelibrary.Books.Dao.BooksDao;
-import devlulibrary.facultyofsciencelibrary.Books.Dto.BookForCreationDto;
 import devlulibrary.facultyofsciencelibrary.Books.Dto.BooksForResponseDto;
 import devlulibrary.facultyofsciencelibrary.Books.Model.BooksModel;
 import devlulibrary.facultyofsciencelibrary.Category.Dao.CategoryDao;
@@ -15,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -23,15 +21,16 @@ import java.util.List;
 
 @Service
 @Component
+//Book service class to handle the business logic of the book entity
 public class BooksService {
     @Autowired
     private BooksDao booksDao;
     @Autowired
     private CategoryDao categoryDao;
 
-    private Boolean checkCategoryValidation(CategoryModel categoryModel) {
+    private Boolean checkCategoryValidation(String categoryName) {
         try {
-            CategoryModel check = categoryDao.getCategoryId(categoryModel.getCategoryName());
+            CategoryModel check = categoryDao.getCategoryId(categoryName);
             return true;
         } catch (Exception e) {
             return false;
@@ -44,7 +43,7 @@ public class BooksService {
             ResponseEntity.notFound().build();
         }
 
-        List<BooksForResponseDto> booksForResponseDtoList = new ArrayList<BooksForResponseDto>();
+        List<BooksForResponseDto> booksForResponseDtoList = new ArrayList<>();
         for (BooksModel bookModel : booksModelList) {
             booksForResponseDtoList.add(new BooksForResponseDto(bookModel.getId(), bookModel.getBookName(), bookModel.getWriter(), bookModel.getDescription(), bookModel.getCategory()));
         }
@@ -66,6 +65,9 @@ public class BooksService {
             BooksModel book = booksDao.getBookById(id);
             String bookName = book.getBookName();
             byte[] fileData = book.getFileData();
+
+            incrementCategoryDownloadsNumber(book.getCategory().getCategoryName());
+
             return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/pdf")).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + bookName + "\"").body(new ByteArrayResource(fileData));
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
@@ -75,9 +77,9 @@ public class BooksService {
     public ResponseEntity<BooksModel> uploadBook(String bookName,
                                                  String writer,
                                                  String description,
-                                                 CategoryModel category,
+                                                 String categoryName,
                                                  MultipartFile file) {
-        if (!checkCategoryValidation(category)) {
+        if (!checkCategoryValidation(categoryName)) {
             return ResponseEntity.badRequest().build();
         }
         if (file == null) {
@@ -85,17 +87,32 @@ public class BooksService {
         }
         BooksModel bookModel = new BooksModel();
         try {
-            bookModel.setBookName(file.getOriginalFilename());
+            bookModel.setBookName(bookName);
             bookModel.setFileData(file.getBytes());
             bookModel.setWriter(writer);
             bookModel.setDescription(description);
-            bookModel.setCategory(new CategoryModel("Math"));
 
+            CategoryModel categoryModel = incrementCategoryBookNumber(categoryName);
+
+            bookModel.setCategory(categoryModel);
             return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(booksDao.storeFile(bookModel));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(bookModel);
         }
     }
 
+    private CategoryModel incrementCategoryBookNumber(String categoryName) {
+        CategoryModel categoryModel = categoryDao.getCategoryId(categoryName);
+        categoryModel.setBooksNumber(categoryModel.getBooksNumber() + 1);
+        categoryDao.deleteCategory(categoryModel.getCategoryName());
+        categoryDao.updateCategory(categoryModel);
+        return categoryModel;
+    }
 
+    private void incrementCategoryDownloadsNumber(String categoryName) {
+        CategoryModel categoryModel = categoryDao.getCategoryId(categoryName);
+        categoryModel.setDownloadNumber(categoryModel.getDownloadNumber() + 1);
+        categoryDao.deleteCategory(categoryModel.getCategoryName());
+        categoryDao.updateCategory(categoryModel);
+    }
 }
