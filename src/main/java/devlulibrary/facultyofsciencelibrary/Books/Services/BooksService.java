@@ -21,6 +21,7 @@ import java.util.List;
 
 @Service
 @Component
+//Book service class to handle the business logic of the book entity
 public class BooksService {
     @Autowired
     private BooksDao booksDao;
@@ -42,7 +43,7 @@ public class BooksService {
             ResponseEntity.notFound().build();
         }
 
-        List<BooksForResponseDto> booksForResponseDtoList = new ArrayList<BooksForResponseDto>();
+        List<BooksForResponseDto> booksForResponseDtoList = new ArrayList<>();
         for (BooksModel bookModel : booksModelList) {
             booksForResponseDtoList.add(new BooksForResponseDto(bookModel.getId(), bookModel.getBookName(), bookModel.getWriter(), bookModel.getDescription(), bookModel.getCategory()));
         }

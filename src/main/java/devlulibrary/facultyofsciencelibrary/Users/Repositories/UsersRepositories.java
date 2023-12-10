@@ -1,10 +1,10 @@
 package devlulibrary.facultyofsciencelibrary.Users.Repositories;
 
+import devlulibrary.facultyofsciencelibrary.DataBaseInterface.LuDataBaseInterface;
 import devlulibrary.facultyofsciencelibrary.Users.model.UsersModel;
-import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;
 
-public interface UsersRepositories extends MongoRepository<UsersModel, String> {
+public interface UsersRepositories extends LuDataBaseInterface<UsersModel, String> {
     Optional<UsersModel> findUsersModelByEmail(String email);
 }
